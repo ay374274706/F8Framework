@@ -140,6 +140,10 @@ namespace F8Framework.Core.Editor
             FileTools.CheckFileAndCreateDirWhenNeeded(URLSetting.CS_STREAMINGASSETS_URL + FileIndexFile);
             foreach (string item in files)
             {
+                if (Path.GetFileName(item).StartsWith("~$"))
+                {
+                    continue;
+                }
                 GetExcelData(item);
                 OnLogCallBack(item.Substring(item.LastIndexOf('\\') + 1));
             }
@@ -198,6 +202,10 @@ namespace F8Framework.Core.Editor
             }
             foreach (string item in files)
             {
+                if (Path.GetFileName(item).StartsWith("~$"))
+                {
+                    continue;
+                }
                 GetExcelData(item);
             }
             
@@ -283,7 +291,7 @@ namespace F8Framework.Core.Editor
             FileStream stream = null;
             try
             {
-                stream = File.Open(inputPath, FileMode.Open, FileAccess.Read);
+                stream = File.Open(inputPath, FileMode.Open, FileAccess.Read,FileShare.ReadWrite);
             }
             catch
             {

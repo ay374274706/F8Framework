@@ -12,8 +12,6 @@ namespace F8Framework.Core
         private List<IEventDataBase> delects = new List<IEventDataBase>();
         // 用于检测死循环调用的调用栈
         private HashSet<IEventDataBase> callStack = new HashSet<IEventDataBase>();
-        // 存储待触发的事件处理器列表
-        private List<IEventDataBase> dispatchInvokes = new List<IEventDataBase>();
 
         // 输出消息死循环的函数
         private void MessageLoop(string debugInfo)
@@ -249,7 +247,6 @@ namespace F8Framework.Core
                 return;
             }
 
-            dispatchInvokes.Clear();
 
             foreach (IEventDataBase obj in eventDatas)
             {
@@ -263,7 +260,14 @@ namespace F8Framework.Core
 
                 if (obj.EventDataShouldBeInvoked())
                 {
-                    dispatchInvokes.Add(obj);
+                    if (obj is EventData eventData)
+                    {
+                        eventData.Listener.Invoke();
+                    }
+                    else if (obj is EventData<object[]> eventData1)
+                    {
+                        eventData1.Listener.Invoke(null);
+                    }
                 }
                 else
                 {
@@ -273,20 +277,7 @@ namespace F8Framework.Core
 
                 callStack.Remove(obj);
             }
-
-            foreach (IEventDataBase obj in dispatchInvokes)
-            {
-                if (obj is EventData eventData)
-                {
-                    eventData.Listener.Invoke();
-                }
-                else if (obj is EventData<object[]> eventData1)
-                {
-                    eventData1.Listener.Invoke(null);
-                }
-            }
-
-            dispatchInvokes.Clear();
+            
 
             ClearCallStack(); // 清除调用栈
         }
@@ -307,7 +298,6 @@ namespace F8Framework.Core
                 return;
             }
 
-            dispatchInvokes.Clear();
 
             foreach (IEventDataBase obj in eventDatas)
             {
@@ -321,7 +311,14 @@ namespace F8Framework.Core
 
                 if (obj.EventDataShouldBeInvoked())
                 {
-                    dispatchInvokes.Add(obj);
+                    if (obj is EventData<object[]> eventData1)
+                    {
+                        eventData1.Listener.Invoke(arg1);
+                    }
+                    else if (obj is EventData eventData)
+                    {
+                        eventData.Listener.Invoke();
+                    }
                 }
                 else
                 {
@@ -331,20 +328,7 @@ namespace F8Framework.Core
 
                 callStack.Remove(obj);
             }
-
-            foreach (IEventDataBase obj in dispatchInvokes)
-            {
-                if (obj is EventData<object[]> eventData1)
-                {
-                    eventData1.Listener.Invoke(arg1);
-                }
-                else if (obj is EventData eventData)
-                {
-                    eventData.Listener.Invoke();
-                }
-            }
-
-            dispatchInvokes.Clear();
+            
 
             ClearCallStack(); // 清除调用栈
         }
@@ -355,7 +339,6 @@ namespace F8Framework.Core
             events.Clear();
             delects.Clear();
             callStack.Clear();
-            dispatchInvokes.Clear();
         }
 
         // 模块初始化

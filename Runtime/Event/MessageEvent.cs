@@ -18,6 +18,11 @@ namespace F8Framework.Core
         SDKOnPayFail = 10011,
         SDKOnPayCancel = 10012,
         SDKOnExitSuccess = 10013,
+        
+        //游戏事件 100000起步
+        RoleAttacked=100000,
+        MapItemArrive,
+        MapItemLeave
     }
 }
 

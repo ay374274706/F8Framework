@@ -72,6 +72,10 @@ namespace F8Framework.Core
             foreach (string item in files)
             {
                 step++;
+                if (Path.GetFileName(item).StartsWith("~$"))
+                {
+                    continue;
+                }
                 GetExcelData(item);
             }
 
@@ -107,7 +111,7 @@ namespace F8Framework.Core
             FileStream stream = null;
             try
             {
-                stream = File.Open(inputPath, FileMode.Open, FileAccess.Read);
+                stream = File.Open(inputPath, FileMode.Open, FileAccess.Read,FileShare.ReadWrite);
             }
             catch
             {

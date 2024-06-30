@@ -7,6 +7,7 @@ namespace F8Framework.Core
     [DisallowMultipleComponent]
     [AddComponentMenu(Constants.F8PoolComponentPath + "F8 Pool Global")]
 #endif
+    [UpdateRefresh]
     public sealed class F8PoolGlobal : ModuleSingletonMono<F8PoolGlobal>, IModule
     {
         [Header("Main")] 

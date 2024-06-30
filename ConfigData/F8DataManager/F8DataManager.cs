@@ -18,6 +18,7 @@ namespace F8Framework.F8ExcelDataClass
 	{
 		private Sheet1 p_Sheet1;
 		private Sheet2 p_Sheet2;
+		private BulletChain p_BulletChain;
 		private LocalizedStrings p_LocalizedStrings;
 
 		public Sheet1Item GetSheet1ByID(Int32 id)
@@ -44,6 +45,19 @@ namespace F8Framework.F8ExcelDataClass
 		public Dictionary<int, Sheet2Item> GetSheet2()
 		{
 			return p_Sheet2.Dict;
+		}
+
+		public BulletChainItem GetBulletChainByID(Int32 id)
+		{
+			BulletChainItem t = null;
+			p_BulletChain.Dict.TryGetValue(id, out t);
+			if (t == null) LogF8.LogError("找不到id： " + id + " ，配置表： BulletChain");
+			return t;
+		}
+
+		public Dictionary<int, BulletChainItem> GetBulletChain()
+		{
+			return p_BulletChain.Dict;
 		}
 
 		public LocalizedStringsItem GetLocalizedStringsByID(Int32 id)
@@ -79,6 +93,7 @@ namespace F8Framework.F8ExcelDataClass
 		{
 			p_Sheet1 = Load<Sheet1>("Sheet1") as Sheet1;
 			p_Sheet2 = Load<Sheet2>("Sheet2") as Sheet2;
+			p_BulletChain = Load<BulletChain>("BulletChain") as BulletChain;
 			p_LocalizedStrings = Load<LocalizedStrings>("LocalizedStrings") as LocalizedStrings;
 		}
 
@@ -86,6 +101,7 @@ namespace F8Framework.F8ExcelDataClass
 		{
 			p_Sheet1 = objs["Sheet1"] as Sheet1;
 			p_Sheet2 = objs["Sheet2"] as Sheet2;
+			p_BulletChain = objs["BulletChain"] as BulletChain;
 			p_LocalizedStrings = objs["LocalizedStrings"] as LocalizedStrings;
 		}
 
@@ -93,6 +109,7 @@ namespace F8Framework.F8ExcelDataClass
 		{
 			yield return LoadAsync<Sheet1>("Sheet1", result => p_Sheet1 = result as Sheet1);
 			yield return LoadAsync<Sheet2>("Sheet2", result => p_Sheet2 = result as Sheet2);
+			yield return LoadAsync<BulletChain>("BulletChain", result => p_BulletChain = result as BulletChain);
 			yield return LoadAsync<LocalizedStrings>("LocalizedStrings", result => p_LocalizedStrings = result as LocalizedStrings);
 		}
 
@@ -105,6 +122,7 @@ namespace F8Framework.F8ExcelDataClass
 		{
 			yield return LoadAsync<Sheet1>("Sheet1", result => p_Sheet1 = result as Sheet1);
 			yield return LoadAsync<Sheet2>("Sheet2", result => p_Sheet2 = result as Sheet2);
+			yield return LoadAsync<BulletChain>("BulletChain", result => p_BulletChain = result as BulletChain);
 			yield return LoadAsync<LocalizedStrings>("LocalizedStrings", result => p_LocalizedStrings = result as LocalizedStrings);
 			onLoadComplete?.Invoke();
 		}
