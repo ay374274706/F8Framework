@@ -17,8 +17,10 @@ namespace F8Framework.F8ExcelDataClass
 	public class F8DataManager : ModuleSingleton<F8DataManager>, IModule
 	{
 		private Sheet1 p_Sheet1;
-		private Sheet2 p_Sheet2;
 		private BulletChain p_BulletChain;
+		private BulletForward p_BulletForward;
+		private BulletGatling p_BulletGatling;
+		private BulletThree p_BulletThree;
 		private LocalizedStrings p_LocalizedStrings;
 
 		public Sheet1Item GetSheet1ByID(Int32 id)
@@ -34,19 +36,6 @@ namespace F8Framework.F8ExcelDataClass
 			return p_Sheet1.Dict;
 		}
 
-		public Sheet2Item GetSheet2ByID(Int32 id)
-		{
-			Sheet2Item t = null;
-			p_Sheet2.Dict.TryGetValue(id, out t);
-			if (t == null) LogF8.LogError("找不到id： " + id + " ，配置表： Sheet2");
-			return t;
-		}
-
-		public Dictionary<int, Sheet2Item> GetSheet2()
-		{
-			return p_Sheet2.Dict;
-		}
-
 		public BulletChainItem GetBulletChainByID(Int32 id)
 		{
 			BulletChainItem t = null;
@@ -58,6 +47,45 @@ namespace F8Framework.F8ExcelDataClass
 		public Dictionary<int, BulletChainItem> GetBulletChain()
 		{
 			return p_BulletChain.Dict;
+		}
+
+		public BulletForwardItem GetBulletForwardByID(Int32 id)
+		{
+			BulletForwardItem t = null;
+			p_BulletForward.Dict.TryGetValue(id, out t);
+			if (t == null) LogF8.LogError("找不到id： " + id + " ，配置表： BulletForward");
+			return t;
+		}
+
+		public Dictionary<int, BulletForwardItem> GetBulletForward()
+		{
+			return p_BulletForward.Dict;
+		}
+
+		public BulletGatlingItem GetBulletGatlingByID(Int32 id)
+		{
+			BulletGatlingItem t = null;
+			p_BulletGatling.Dict.TryGetValue(id, out t);
+			if (t == null) LogF8.LogError("找不到id： " + id + " ，配置表： BulletGatling");
+			return t;
+		}
+
+		public Dictionary<int, BulletGatlingItem> GetBulletGatling()
+		{
+			return p_BulletGatling.Dict;
+		}
+
+		public BulletThreeItem GetBulletThreeByID(Int32 id)
+		{
+			BulletThreeItem t = null;
+			p_BulletThree.Dict.TryGetValue(id, out t);
+			if (t == null) LogF8.LogError("找不到id： " + id + " ，配置表： BulletThree");
+			return t;
+		}
+
+		public Dictionary<int, BulletThreeItem> GetBulletThree()
+		{
+			return p_BulletThree.Dict;
 		}
 
 		public LocalizedStringsItem GetLocalizedStringsByID(Int32 id)
@@ -92,24 +120,30 @@ namespace F8Framework.F8ExcelDataClass
 		public void LoadAll()
 		{
 			p_Sheet1 = Load<Sheet1>("Sheet1") as Sheet1;
-			p_Sheet2 = Load<Sheet2>("Sheet2") as Sheet2;
 			p_BulletChain = Load<BulletChain>("BulletChain") as BulletChain;
+			p_BulletForward = Load<BulletForward>("BulletForward") as BulletForward;
+			p_BulletGatling = Load<BulletGatling>("BulletGatling") as BulletGatling;
+			p_BulletThree = Load<BulletThree>("BulletThree") as BulletThree;
 			p_LocalizedStrings = Load<LocalizedStrings>("LocalizedStrings") as LocalizedStrings;
 		}
 
 		public void RuntimeLoadAll(Dictionary<String, System.Object> objs)
 		{
 			p_Sheet1 = objs["Sheet1"] as Sheet1;
-			p_Sheet2 = objs["Sheet2"] as Sheet2;
 			p_BulletChain = objs["BulletChain"] as BulletChain;
+			p_BulletForward = objs["BulletForward"] as BulletForward;
+			p_BulletGatling = objs["BulletGatling"] as BulletGatling;
+			p_BulletThree = objs["BulletThree"] as BulletThree;
 			p_LocalizedStrings = objs["LocalizedStrings"] as LocalizedStrings;
 		}
 
 		public IEnumerable LoadAllAsync()
 		{
 			yield return LoadAsync<Sheet1>("Sheet1", result => p_Sheet1 = result as Sheet1);
-			yield return LoadAsync<Sheet2>("Sheet2", result => p_Sheet2 = result as Sheet2);
 			yield return LoadAsync<BulletChain>("BulletChain", result => p_BulletChain = result as BulletChain);
+			yield return LoadAsync<BulletForward>("BulletForward", result => p_BulletForward = result as BulletForward);
+			yield return LoadAsync<BulletGatling>("BulletGatling", result => p_BulletGatling = result as BulletGatling);
+			yield return LoadAsync<BulletThree>("BulletThree", result => p_BulletThree = result as BulletThree);
 			yield return LoadAsync<LocalizedStrings>("LocalizedStrings", result => p_LocalizedStrings = result as LocalizedStrings);
 		}
 
@@ -121,8 +155,10 @@ namespace F8Framework.F8ExcelDataClass
 		public IEnumerator LoadAllAsyncIEnumerator(Action onLoadComplete)
 		{
 			yield return LoadAsync<Sheet1>("Sheet1", result => p_Sheet1 = result as Sheet1);
-			yield return LoadAsync<Sheet2>("Sheet2", result => p_Sheet2 = result as Sheet2);
 			yield return LoadAsync<BulletChain>("BulletChain", result => p_BulletChain = result as BulletChain);
+			yield return LoadAsync<BulletForward>("BulletForward", result => p_BulletForward = result as BulletForward);
+			yield return LoadAsync<BulletGatling>("BulletGatling", result => p_BulletGatling = result as BulletGatling);
+			yield return LoadAsync<BulletThree>("BulletThree", result => p_BulletThree = result as BulletThree);
 			yield return LoadAsync<LocalizedStrings>("LocalizedStrings", result => p_LocalizedStrings = result as LocalizedStrings);
 			onLoadComplete?.Invoke();
 		}

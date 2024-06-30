@@ -34,7 +34,6 @@ namespace F8Framework.Core.Editor
             // }
             // AssetDatabase.Refresh();
         }
-        
         [MenuItem("开发工具/Excel导表-F8")]
         public static void LoadAllExcelData()
         {

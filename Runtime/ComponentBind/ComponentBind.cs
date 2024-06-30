@@ -135,7 +135,14 @@ namespace F8Framework.Core
             }
 
             // 使用正则表达式匹配并替换注释之间的内容
-            string pattern = @"// 自动获取组件（自动生成，不能删除）(.*?)// 自动获取组件（自动生成，不能删除）";
+            string pattern = @"// 自动获取组件（自动生成，不能删除）
+
+#if UNITY_EDITOR
+    protected override void SetComponents()
+    {
+    }
+#endif
+    // 自动获取组件（自动生成，不能删除）";
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(pattern, System.Text.RegularExpressions.RegexOptions.Singleline);
             System.Text.RegularExpressions.Match match = regex.Match(scriptContent);
 
