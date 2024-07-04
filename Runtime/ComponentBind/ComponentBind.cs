@@ -26,13 +26,13 @@ namespace F8Framework.Core
             Bind();
         }
 
-        protected void OnValidate()
-        {
-            if (!Application.isPlaying)
-            {
-                Bind();
-            }
-        }
+        // protected void OnValidate()
+        // {
+        //     if (!Application.isPlaying)
+        //     {
+        //         Bind();
+        //     }
+        // }
         
         private void GenerateAutoBindComponentsCode()
         {
