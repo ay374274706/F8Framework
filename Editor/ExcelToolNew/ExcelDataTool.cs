@@ -102,16 +102,17 @@ namespace F8Framework.Core.EditorGenerate
                 LogF8.LogError("暂无可以导入的数据表！自动为你创建：【Demo工作表.xlsx / 本地化.xlsx】两个表格！" + ExcelPath + " 目录");
             }
             
-            string F8DataManagerPath = FileTools.FormatToUnityPath(FileTools.TruncatePath(GetScriptPath(), 3)) + "/ConfigData/F8DataManager";
-            FileTools.SafeClearDir(F8DataManagerPath);
-            FileTools.CheckDirAndCreateWhenNeeded(F8DataManagerPath);
-            string F8ExcelDataClassPath = FileTools.FormatToUnityPath(FileTools.TruncatePath(GetScriptPath(), 3)) + "/ConfigData/F8ExcelDataClass";
-            FileTools.SafeClearDir(F8ExcelDataClassPath);
-            FileTools.CheckDirAndCreateWhenNeeded(F8ExcelDataClassPath);
-            string F8ExcelDataClassPathDLL = FileTools.FormatToUnityPath(FileTools.TruncatePath(GetScriptPath(), 3)) + "/ConfigData/" + CODE_NAMESPACE + ".asmdef";
-            FileTools.SafeDeleteFile(F8ExcelDataClassPathDLL);
-            FileTools.SafeDeleteFile(F8ExcelDataClassPathDLL + ".meta");
-            FileTools.SafeDeleteFile(Application.dataPath + DataManagerFolder + "/F8DataManager.asmref");
+            // string F8DataManagerPath = FileTools.FormatToUnityPath(FileTools.TruncatePath(GetScriptPath(), 3)) + "/ConfigData/F8DataManager";
+            // FileTools.SafeClearDir(F8DataManagerPath);
+            // FileTools.CheckDirAndCreateWhenNeeded(F8DataManagerPath);
+            // LogF8.Log(F8DataManagerPath);
+            // string F8ExcelDataClassPath = FileTools.FormatToUnityPath(FileTools.TruncatePath(GetScriptPath(), 3)) + "/ConfigData/F8ExcelDataClass";
+            // FileTools.SafeClearDir(F8ExcelDataClassPath);
+            // FileTools.CheckDirAndCreateWhenNeeded(F8ExcelDataClassPath);
+            // string F8ExcelDataClassPathDLL = FileTools.FormatToUnityPath(FileTools.TruncatePath(GetScriptPath(), 3)) + "/ConfigData/" + CODE_NAMESPACE + ".asmdef";
+            // FileTools.SafeDeleteFile(F8ExcelDataClassPathDLL);
+            // FileTools.SafeDeleteFile(F8ExcelDataClassPathDLL + ".meta");
+            // FileTools.SafeDeleteFile(Application.dataPath + DataManagerFolder + "/F8DataManager.asmref");
             CreateAsmdefFile();
             AssetDatabase.Refresh();
             
