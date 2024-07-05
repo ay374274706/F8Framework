@@ -529,10 +529,15 @@ namespace F8Framework.Core
                 return;
             }
 
-            if (immediately)
-                ForEachPool(pool => pool.DestroyPoolImmediate());
-            else
-                ForEachPool(pool => pool.DestroyPool());
+            List<F8GameObjectPool> pools = new List<F8GameObjectPool>(AllPoolsMap.Count);
+            ForEachPool(pool => pools.Add(pool));
+            foreach (var pool in pools)
+            {
+                if (immediately)
+                    pool.DestroyPoolImmediate();
+                else
+                    pool.DestroyPool();
+            }
         }
 
         internal void RegisterPool(F8GameObjectPool pool)

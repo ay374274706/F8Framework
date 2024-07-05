@@ -8,13 +8,13 @@ namespace F8Framework.Core
     {
         protected Dictionary<string, ViewParams> uiViews = new Dictionary<string, ViewParams>();
         protected Dictionary<string, ViewParams> uiCache = new Dictionary<string, ViewParams>();
-        
+
         private Canvas _canvas;
         private CanvasScaler _canvasScaler;
         public CanvasScaler CanvasScaler => _canvasScaler;
         private GraphicRaycaster _graphicRaycaster;
         public GraphicRaycaster GraphicRaycaster => _graphicRaycaster;
-        
+
         private void Awake()
         {
             // 获取组件
@@ -28,7 +28,7 @@ namespace F8Framework.Core
             _canvas.sortingOrder = sortOrder;
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         }
-        
+
         public string Add(int uiId, UIConfig config, object[] parameters = null, UICallbacks callbacks = null)
         {
             var prefabPath = config.AssetName;
@@ -75,21 +75,19 @@ namespace F8Framework.Core
             }
             else
             {
-                AssetManager.Instance.LoadAsync<GameObject>(viewParams.PrefabPath, (res) =>
-                {
-                    AssetManager.Instance.Unload(viewParams.PrefabPath, false);
-                    
-                    GameObject childNode = Instantiate(res);
-                    childNode.name = viewParams.Uuid;
-                    viewParams.Go = childNode;
-                
-                    DelegateComponent comp = childNode.AddComponent<DelegateComponent>();
-                    viewParams.DelegateComponent = comp;
-                    viewParams.BaseView = childNode.GetComponent<BaseView>();
-                    comp.ViewParams = viewParams;
-                
-                    CreateNode(viewParams);
-                });
+                var res = AssetManager.Instance.Load<GameObject>(viewParams.PrefabPath);
+                AssetManager.Instance.Unload(viewParams.PrefabPath, false);
+
+                GameObject childNode = Instantiate(res);
+                childNode.name = viewParams.Uuid;
+                viewParams.Go = childNode;
+
+                DelegateComponent comp = childNode.AddComponent<DelegateComponent>();
+                viewParams.DelegateComponent = comp;
+                viewParams.BaseView = childNode.GetComponent<BaseView>();
+                comp.ViewParams = viewParams;
+
+                CreateNode(viewParams);
             }
         }
 
@@ -99,7 +97,7 @@ namespace F8Framework.Core
             {
                 UIManager.Instance.GetCurrentUuids().Add(viewParams.Uuid);
             }
-            
+
             viewParams.Valid = true;
 
             var comp = viewParams.DelegateComponent;
@@ -119,7 +117,7 @@ namespace F8Framework.Core
             {
                 RemoveCache(prefabPath);
             }
-            
+
             var children = GetChildrens();
             foreach (var comp in children)
             {
@@ -131,6 +129,7 @@ namespace F8Framework.Core
                     {
                         uiCache[viewParams.PrefabPath] = viewParams;
                     }
+
                     comp.Remove(isDestroy);
                     viewParams.Valid = false;
                 }
@@ -145,7 +144,7 @@ namespace F8Framework.Core
                 {
                     uiViews.Remove(viewParams.Uuid);
                 }
-                
+
                 var comp = viewParams.DelegateComponent;
                 comp.Remove(isDestroy);
             }
@@ -204,7 +203,7 @@ namespace F8Framework.Core
 
             return false;
         }
-        
+
         protected List<DelegateComponent> GetChildrens()
         {
             var result = new List<DelegateComponent>();
@@ -231,12 +230,13 @@ namespace F8Framework.Core
                     comp.Remove(true);
                     value.Valid = false;
                 }
-                
+
                 foreach (var value in uiCache.Values)
                 {
                     var childNode = value.Go;
                     Destroy(childNode);
                 }
+
                 uiCache.Clear();
             }
             else
@@ -249,7 +249,7 @@ namespace F8Framework.Core
                     value.Valid = false;
                 }
             }
-            
+
             uiViews.Clear();
         }
     }
