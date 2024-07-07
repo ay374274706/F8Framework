@@ -85,7 +85,7 @@ namespace F8Framework.Core
             foreach (KeyValuePair<string, List<ConfigData[]>> each in dataDict)
             {
                 step++;
-                Type temp = assembly.GetType(CODE_NAMESPACE + "." + each.Key + "Item");
+                Type temp = assembly.GetType(CODE_NAMESPACE + "." + each.Key + "_Data");
                 object container = assembly.CreateInstance(CODE_NAMESPACE + "." + each.Key);
                 //序列化数据
                 Serialize(container, temp, each.Value);
