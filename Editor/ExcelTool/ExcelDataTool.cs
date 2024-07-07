@@ -213,7 +213,7 @@ namespace F8Framework.Core.Editor
             {
                 //Assembly.CreateInstance 方法 (String) 使用区分大小写的搜索，从此程序集中查找指定的类型，然后使用系统激活器创建它的实例化对象
                 object container = assembly.CreateInstance(CODE_NAMESPACE + "." + each.Key);
-                Type temp = assembly.GetType(CODE_NAMESPACE + "." + each.Key + "Item");
+                Type temp = assembly.GetType(CODE_NAMESPACE + "." + each.Key + "_Data");
                 //序列化数据
                 Serialize(container, temp, each.Value, BinDataPath);
             }

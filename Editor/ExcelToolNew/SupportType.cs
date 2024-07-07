@@ -65,7 +65,7 @@ namespace F8Framework.Core.EditorGenerate
             classSource.Append("namespace " + ExcelDataTool.CODE_NAMESPACE + "\n");
             classSource.Append("{\n");
             classSource.Append("\t[Serializable]\n");
-            classSource.Append("\tpublic class " + ClassName + "Item\n"); //表里每一条数据的类型名为表类型名加Item
+            classSource.Append("\tpublic class " + ClassName + "_Data\n"); //表里每一条数据的类型名为表类型名加_Data
             classSource.Append("\t{\n");
             //设置成员
             for (int i = 0; i < fields.Length; ++i)
@@ -90,15 +90,15 @@ namespace F8Framework.Core.EditorGenerate
                 }
             }
 
-            classSource.Append("\t\tpublic " + "Dictionary<" + idType + ", " + ClassName + "Item" + "> " + "Dict" +
-                               " = new Dictionary<" + idType + ", " + ClassName + "Item" + ">();\n");
+            classSource.Append("\t\tpublic " + "Dictionary<" + idType + ", " + ClassName + "_Data" + "> " + "Dict" +
+                               " = new Dictionary<" + idType + ", " + ClassName + "_Data" + ">();\n");
             classSource.Append("\t}\n");
             classSource.Append("}\n");
             return classSource.ToString();
             /*  //生成的条目数据类
                 namespace F8ExcelDataClass
                 {
-                    public class testItem
+                    public class test_Data
                     {
                         public int id;
                         public float m_float;
@@ -199,7 +199,7 @@ namespace F8Framework.Core.EditorGenerate
         {
             List<string> list = new List<string>();
             list.AddRange(codeList.Keys);
-            IEnumerable types = list.FindAll(t => { return !t.Contains("Item"); });
+            IEnumerable types = list.FindAll(t => { return !t.Contains("_Data"); });
 
             StringBuilder source = new StringBuilder();
             source.Append("/*\n");
@@ -233,8 +233,8 @@ namespace F8Framework.Core.EditorGenerate
             //定义方法
             foreach (string t in types)
             {
-                string typeName = t + "Item"; //类型名
-                string typeNameNotItem = t; //类型名没item
+                string typeName = t + "_Data"; //类型名
+                string typeNameNot_Data = t; //类型名没_Data
                 Type tempType = Util.Assembly.GetType(ExcelDataTool.CODE_NAMESPACE + "." + typeName);
                 if (tempType==null)
                 {
@@ -244,7 +244,7 @@ namespace F8Framework.Core.EditorGenerate
                 fields = Util.Assembly.GetTypeAllFields(tempType).ToList(); //获取数据类的所有字段信息
                 string idType = fields.Find(f => f.Name == "id" || f.Name == "ID" || f.Name == "iD" || f.Name == "Id")
                     .FieldType.Name; //获取id的数据类型
-                source.Append("\t\tpublic " + typeName + " Get" + typeNameNotItem + "ByID" + "(" + idType + " id)\n");
+                source.Append("\t\tpublic " + typeName + " Get" + typeNameNot_Data + "ByID" + "(" + idType + " id)\n");
                 source.Append("\t\t{\n");
                 source.Append("\t\t\t" + typeName + " t = null;\n");
                 source.Append("\t\t\tp_" + t + ".Dict.TryGetValue(id, out t);\n");
@@ -254,7 +254,7 @@ namespace F8Framework.Core.EditorGenerate
                 source.Append("\t\t\treturn t;\n");
                 source.Append("\t\t}\n\n");
 
-                source.Append("\t\tpublic Dictionary<int, " + typeName + ">" + " Get" + typeNameNotItem + "()\n");
+                source.Append("\t\tpublic Dictionary<int, " + typeName + ">" + " Get" + typeNameNot_Data + "()\n");
                 source.Append("\t\t{\n");
                 source.Append("\t\t\treturn p_" + t + ".Dict;\n");
                 source.Append("\t\t}\n\n");
@@ -418,16 +418,16 @@ namespace F8Framework.Core.EditorGenerate
                 {
                     public test p_test;
                     public test2 p_test2;
-                    public testItem GetTestByID(Int32 id)
+                    public test_Data GetTestByID(Int32 id)
                     {
-                        testItem t = null;
+                        test_Data t = null;
                         p_test.Dict.TryGetValue(id, out t);
                         if (t == null) LogF8.LogError("can't find the id " + id + " in test");
                         return t;
                     }
-                    public test2Item GetTest2ByID(String id)
+                    public test2_Data GetTest2ByID(String id)
                     {
-                        test2Item t = null;
+                        test2_Data t = null;
                         p_test2.Dict.TryGetValue(id, out t);
                         if (t == null) LogF8.LogError("can't find the id " + id + " in test2");
                         return t;
